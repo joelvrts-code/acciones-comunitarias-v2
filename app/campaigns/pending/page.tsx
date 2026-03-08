@@ -2,7 +2,6 @@ import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { approveCampaign, rejectCampaign } from "../actions";
 
 export default async function PendingCampaignsPage() {
   const session = await getServerSession(authOptions);
@@ -18,7 +17,7 @@ export default async function PendingCampaignsPage() {
   });
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-8">
         Campañas Pendientes
       </h1>
@@ -38,37 +37,15 @@ export default async function PendingCampaignsPage() {
             </p>
 
             <p className="text-sm text-gray-500 mt-2">
-              Creada por: {campaign.createdBy.email}
+              Creada por: {campaign.createdBy?.email}
             </p>
 
             <div className="flex gap-4 mt-4">
-              <form action={approveCampaign}>
-                <input
-                  type="hidden"
-                  name="campaignId"
-                  value={campaign.id}
-                />
-                <button className="bg-green-600 text-white px-4 py-2 rounded-lg">
-                  Aprobar
-                </button>
-              </form>
-
-              <form action={rejectCampaign}>
-                <input
-                  type="hidden"
-                  name="campaignId"
-                  value={campaign.id}
-                />
-                <button className="bg-red-600 text-white px-4 py-2 rounded-lg">
-                  Rechazar
-                </button>
-              </form>
-
               <Link
                 href={`/campaigns/${campaign.id}`}
                 className="bg-gray-300 px-4 py-2 rounded-lg"
               >
-                Ver
+                Ver campaña
               </Link>
             </div>
           </div>
